@@ -12,7 +12,7 @@ TASKS = [
             "preserving the **order of first occurrence**. Spaces are treated as characters.\n\n"
             "### Examples\n"
             "```\n"
-            'remove_duplicates_preserve_order("programming") -> "programin"\n'
+            'remove_duplicates_preserve_order("programming") -> "progamin"\n'
             'remove_duplicates_preserve_order("hello") -> "helo"\n'
             'remove_duplicates_preserve_order("abcabc") -> "abc"\n'
             "```\n"
@@ -43,7 +43,7 @@ TASKS = [
                 "name": "Normal string with duplicates",
                 "function_name": "remove_duplicates_preserve_order",
                 "input_args": ["programming"],
-                "expected_output": "programin",
+                "expected_output": "progamin",
             },
             {
                 "name": "String with spaces",
