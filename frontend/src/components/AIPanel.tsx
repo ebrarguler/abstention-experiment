@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface AIPanelProps {
   aiResponseType: 'correct' | 'incorrect' | 'abstention';
@@ -6,6 +6,83 @@ interface AIPanelProps {
   onUseAI: () => void;
   onWriteScratch: () => void;
   adopted: boolean | null;
+}
+
+function AIPanelWithCode({
+  aiCodeShown,
+  adopted,
+  onUseAI,
+  onWriteScratch,
+  cardStyle,
+  headerStyle,
+  primaryButton,
+  secondaryButton,
+}: {
+  aiCodeShown: string;
+  adopted: boolean | null;
+  onUseAI: () => void;
+  onWriteScratch: () => void;
+  cardStyle: React.CSSProperties;
+  headerStyle: React.CSSProperties;
+  primaryButton: React.CSSProperties;
+  secondaryButton: React.CSSProperties;
+}) {
+  const [revealed, setRevealed] = useState(false);
+
+  return (
+    <div style={cardStyle}>
+      <div style={headerStyle}>AI Suggestion</div>
+      {!revealed ? (
+        <div>
+          <div style={{ fontSize: '13px', color: '#64748b', marginBottom: '12px' }}>
+            An AI suggestion is available. You can reveal it or write your own solution.
+          </div>
+          <div>
+            <button style={primaryButton} onClick={() => setRevealed(true)}>
+              Reveal AI Suggestion
+            </button>
+            <button style={secondaryButton} onClick={onWriteScratch}>
+              Write from Scratch
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <pre
+            style={{
+              backgroundColor: '#1e293b',
+              color: '#e2e8f0',
+              padding: '14px',
+              borderRadius: '6px',
+              overflowX: 'auto',
+              fontSize: '13px',
+              lineHeight: '1.6',
+              marginBottom: '12px',
+              fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
+            }}
+          >
+            <code>{aiCodeShown}</code>
+          </pre>
+          {adopted === null ? (
+            <div>
+              <button style={primaryButton} onClick={onUseAI}>
+                Use AI Suggestion
+              </button>
+              <button style={secondaryButton} onClick={onWriteScratch}>
+                Write from Scratch
+              </button>
+            </div>
+          ) : (
+            <div style={{ fontSize: '13px', color: '#64748b', fontStyle: 'italic' }}>
+              {adopted
+                ? 'You chose to use the AI suggestion as your starting point.'
+                : 'You chose to write your own solution.'}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 }
 
 export default function AIPanel({
@@ -92,40 +169,16 @@ export default function AIPanel({
 
   if (aiCodeShown) {
     return (
-      <div style={cardStyle}>
-        <div style={headerStyle}>AI Suggestion</div>
-        <pre
-          style={{
-            backgroundColor: '#1e293b',
-            color: '#e2e8f0',
-            padding: '14px',
-            borderRadius: '6px',
-            overflowX: 'auto',
-            fontSize: '13px',
-            lineHeight: '1.6',
-            marginBottom: '12px',
-            fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
-          }}
-        >
-          <code>{aiCodeShown}</code>
-        </pre>
-        {adopted === null ? (
-          <div>
-            <button style={primaryButton} onClick={onUseAI}>
-              Use AI Suggestion
-            </button>
-            <button style={secondaryButton} onClick={onWriteScratch}>
-              Write from Scratch
-            </button>
-          </div>
-        ) : (
-          <div style={{ fontSize: '13px', color: '#64748b', fontStyle: 'italic' }}>
-            {adopted
-              ? 'You chose to use the AI suggestion as your starting point.'
-              : 'You chose to write your own solution.'}
-          </div>
-        )}
-      </div>
+      <AIPanelWithCode
+        aiCodeShown={aiCodeShown}
+        adopted={adopted}
+        onUseAI={onUseAI}
+        onWriteScratch={onWriteScratch}
+        cardStyle={cardStyle}
+        headerStyle={headerStyle}
+        primaryButton={primaryButton}
+        secondaryButton={secondaryButton}
+      />
     );
   }
 
