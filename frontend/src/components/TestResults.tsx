@@ -1,11 +1,12 @@
-import type { TestResult } from '../types';
+import type { TestResult, VisibleTest } from '../types';
 
 interface TestResultsProps {
   results: TestResult[];
   testsRun: boolean;
+  visibleTests?: VisibleTest[];
 }
 
-export default function TestResults({ results, testsRun }: TestResultsProps) {
+export default function TestResults({ results, testsRun, visibleTests }: TestResultsProps) {
   if (!testsRun) {
     return (
       <div
@@ -74,6 +75,18 @@ export default function TestResults({ results, testsRun }: TestResultsProps) {
               backgroundColor: result.passed ? '#f0fdf4' : '#fef2f2',
             }}
           >
+            {(() => {
+              const vt = visibleTests?.[idx];
+              return vt ? (
+                <div style={{ marginBottom: '6px', fontSize: '11px', color: '#64748b', fontFamily: 'monospace' }}>
+                  <span style={{ fontWeight: '600' }}>Input: </span>
+                  {vt.input_args.map((a) => JSON.stringify(a)).join(', ')}
+                  <span style={{ margin: '0 6px', color: '#cbd5e1' }}>→</span>
+                  <span style={{ fontWeight: '600' }}>Expected: </span>
+                  {JSON.stringify(vt.expected_output)}
+                </div>
+              ) : null;
+            })()}
             <div
               style={{
                 display: 'flex',

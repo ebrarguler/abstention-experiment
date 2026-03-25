@@ -71,6 +71,48 @@ const btnDanger: React.CSSProperties = {
   cursor: 'pointer',
 };
 
+function renderMarkdown(text: string): React.ReactNode[] {
+  const lines = text.split('\n');
+  const nodes: React.ReactNode[] = [];
+  let i = 0;
+
+  const renderInline = (line: string): React.ReactNode => {
+    const parts = line.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, idx) =>
+      part.startsWith('**') && part.endsWith('**')
+        ? <strong key={idx}>{part.slice(2, -2)}</strong>
+        : part
+    );
+  };
+
+  while (i < lines.length) {
+    const line = lines[i];
+    if (line.startsWith('### ')) {
+      nodes.push(<h3 key={i} style={{ margin: '12px 0 4px', fontSize: '13px', fontWeight: '700', color: '#0f172a' }}>{line.slice(4)}</h3>);
+    } else if (line.startsWith('## ')) {
+      nodes.push(<h2 key={i} style={{ margin: '0 0 8px', fontSize: '15px', fontWeight: '700', color: '#0f172a' }}>{line.slice(3)}</h2>);
+    } else if (line.trim() === '```') {
+      const codeLines: string[] = [];
+      i++;
+      while (i < lines.length && lines[i].trim() !== '```') {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      nodes.push(
+        <pre key={i} style={{ backgroundColor: '#f1f5f9', borderRadius: '6px', padding: '10px 12px', fontSize: '12px', fontFamily: 'monospace', overflowX: 'auto', margin: '6px 0', whiteSpace: 'pre-wrap' }}>
+          {codeLines.join('\n')}
+        </pre>
+      );
+    } else if (line.trim() === '') {
+      nodes.push(<div key={i} style={{ height: '6px' }} />);
+    } else {
+      nodes.push(<p key={i} style={{ margin: '2px 0' }}>{renderInline(line)}</p>);
+    }
+    i++;
+  }
+  return nodes;
+}
+
 export default function TaskPage() {
   const { participantId, taskAssignments, currentTaskIndex, advanceTask } = useExperiment();
   const task: TaskAssignment = taskAssignments[currentTaskIndex];
@@ -218,9 +260,9 @@ export default function TaskPage() {
             <div style={{ fontSize: '12px', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', marginBottom: '12px' }}>
               Task Description
             </div>
-            <pre style={{ fontFamily: 'inherit', fontSize: '14px', color: '#1e293b', whiteSpace: 'pre-wrap', margin: 0, lineHeight: '1.7' }}>
-              {task.description}
-            </pre>
+            <div style={{ fontSize: '14px', color: '#1e293b', lineHeight: '1.7' }}>
+              {renderMarkdown(task.description)}
+            </div>
             <div style={{ marginTop: '16px', backgroundColor: '#f8fafc', borderRadius: '6px', padding: '12px', fontFamily: 'monospace', fontSize: '13px', color: '#475569' }}>
               {task.function_signature}
             </div>
@@ -275,7 +317,7 @@ export default function TaskPage() {
 
           {(testsRun || submittedResults) && (
             <div style={cardStyle}>
-              <TestResults results={submittedResults ?? testResults} testsRun={testsRun || !!submittedResults} />
+              <TestResults results={submittedResults ?? testResults} testsRun={testsRun || !!submittedResults} visibleTests={task.visible_tests} />
             </div>
           )}
         </div>
