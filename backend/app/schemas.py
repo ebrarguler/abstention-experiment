@@ -17,6 +17,7 @@ class TaskAssignmentOut(BaseModel):
     visible_tests: List[Any]
     ai_response_type: str
     ai_code_shown: Optional[str] = None
+    hints: List[str] = []
 
 
 class ParticipantOut(BaseModel):

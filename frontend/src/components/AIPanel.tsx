@@ -6,6 +6,7 @@ interface AIPanelProps {
   onUseAI: () => void;
   onWriteScratch: () => void;
   adopted: boolean | null;
+  hints?: string[];
 }
 
 function AIPanelWithCode({
@@ -91,6 +92,7 @@ export default function AIPanel({
   onUseAI,
   onWriteScratch,
   adopted,
+  hints = [],
 }: AIPanelProps) {
   const cardStyle: React.CSSProperties = {
     border: '1px solid #e2e8f0',
@@ -154,6 +156,28 @@ export default function AIPanel({
             Please write your own solution from scratch.
           </div>
         </div>
+        {hints.length > 0 && (
+          <div
+            style={{
+              backgroundColor: '#fffbeb',
+              border: '1px solid #fde68a',
+              borderRadius: '6px',
+              padding: '12px 14px',
+              marginBottom: '12px',
+            }}
+          >
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#92400e', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+              Hints
+            </div>
+            <ol style={{ margin: 0, paddingLeft: '18px' }}>
+              {hints.map((hint, i) => (
+                <li key={i} style={{ fontSize: '13px', color: '#78350f', marginBottom: i < hints.length - 1 ? '6px' : '0', lineHeight: '1.5' }}>
+                  {hint}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
         {adopted === null ? (
           <button style={secondaryButton} onClick={onWriteScratch}>
             Write from Scratch

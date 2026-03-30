@@ -15,6 +15,7 @@ export interface TaskAssignment {
   visible_tests: VisibleTest[];
   ai_response_type: 'correct' | 'incorrect' | 'abstention';
   ai_code_shown: string | null;
+  hints: string[];
 }
 
 export interface VisibleTest {

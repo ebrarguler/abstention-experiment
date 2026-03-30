@@ -9,6 +9,9 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models import Participant, Demographics, Task, TaskAssignment
 from ..schemas import ParticipantCreate, ParticipantOut, TaskAssignmentOut, DemographicsCreate
+from ..tasks_data import TASKS
+
+_HINTS_BY_SLUG = {t["slug"]: t.get("hints", []) for t in TASKS}
 
 router = APIRouter()
 
@@ -58,6 +61,7 @@ def build_task_assignment_out(assignment: TaskAssignment) -> TaskAssignmentOut:
         visible_tests=visible_tests,
         ai_response_type=assignment.ai_response_type,
         ai_code_shown=assignment.ai_code_shown,
+        hints=_HINTS_BY_SLUG.get(task.slug, []),
     )
 
 

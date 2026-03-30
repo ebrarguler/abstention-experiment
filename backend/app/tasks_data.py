@@ -34,6 +34,11 @@ TASKS = [
             "    return ''.join(result)\n"
         ),
         "incorrect_solution": None,
+        "hints": [
+            "Iterate through the string character by character.",
+            "Keep track of which characters you've already seen (a set works well).",
+            "Only add a character to your result if you haven't seen it before.",
+        ],
         "abstention_message": (
             "I'm not confident enough to provide a code suggestion for this task. "
             "I'd recommend writing the solution yourself."
@@ -115,6 +120,11 @@ TASKS = [
             "    return [lst[i:i+n] for i in range(0, len(lst), n)]\n"
         ),
         "incorrect_solution": None,
+        "hints": [
+            "Use slicing to extract pieces of the list: lst[start:end].",
+            "A range with a step can generate the start index of each chunk.",
+            "range(0, len(lst), n) gives you 0, n, 2n, … — the start of each chunk.",
+        ],
         "abstention_message": (
             "I'm not confident enough to provide a code suggestion for this task. "
             "I'd recommend writing the solution yourself."
@@ -195,6 +205,11 @@ TASKS = [
             "    cleaned = ''.join(ch.lower() for ch in s if ch.isalnum())\n"
             "    return cleaned == cleaned[::-1]\n"
         ),
+        "hints": [
+            "First clean the string: lowercase it and remove anything that isn't a letter or digit.",
+            "ch.isalnum() tells you whether a character should be kept.",
+            "A palindrome reads the same forwards and backwards — compare the cleaned string to its reverse.",
+        ],
         # BUG: does not strip non-alphanumeric characters — only lowercases
         "incorrect_solution": (
             "def is_palindrome(s: str) -> bool:\n"
@@ -286,6 +301,11 @@ TASKS = [
             "        return lst\n"
             "    return lst[-k:] + lst[:-k]\n"
         ),
+        "hints": [
+            "Rotating right by k means the last k elements move to the front.",
+            "lst[-k:] gives you the last k elements; lst[:-k] gives everything before them.",
+            "Handle the edge case where k is larger than the list length using the modulo operator.",
+        ],
         # BUG: rotates LEFT instead of RIGHT (lst[k:] + lst[:k])
         "incorrect_solution": (
             "def rotate_list(lst: list, k: int) -> list:\n"
@@ -380,6 +400,11 @@ TASKS = [
             "    return result\n"
         ),
         "incorrect_solution": None,
+        "hints": [
+            "Check each element: if it's a list, flatten it recursively; otherwise, add it directly.",
+            "isinstance(item, list) tells you whether an element is itself a list.",
+            "A recursive helper function that calls itself on nested lists handles any depth.",
+        ],
         "abstention_message": (
             "I'm not confident enough to provide a code suggestion for this task. "
             "I'd recommend writing the solution yourself."
@@ -474,6 +499,11 @@ TASKS = [
             "    return not stack\n"
         ),
         "incorrect_solution": None,
+        "hints": [
+            "Use a stack: push opening brackets, and pop when you see a closing one.",
+            "When you encounter a closing bracket, check that it matches the top of the stack.",
+            "At the end the stack should be empty — any leftover opening brackets mean it's invalid.",
+        ],
         "abstention_message": (
             "I'm not confident enough to provide a code suggestion for this task. "
             "I'd recommend writing the solution yourself."

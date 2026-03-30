@@ -274,6 +274,7 @@ export default function TaskPage() {
             onUseAI={handleUseAI}
             onWriteScratch={handleWriteScratch}
             adopted={adoptionChoice !== null ? adoptionChoice === 'used_ai' : null}
+            hints={task.hints}
           />
         </div>
 
